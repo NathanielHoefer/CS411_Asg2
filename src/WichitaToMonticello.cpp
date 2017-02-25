@@ -16,6 +16,15 @@
     Notes: Input values have not been fully checked for values ranging far beyond
     reasonable values since it was not explicitly mentioned in the rubric.
 
+    TODO: Create a VehicleRecords Class
+	TODO: PrintToFile function
+	TODO: Create ImportVehicles text file
+    TODO: ImportVehicles function
+    TODO: Update TripParameters Constructor
+    TODO: TripParameters retrieveParms function
+    TODO: Exception Handling
+
+
 ******************************************************************************/
 
 #include "VehicleTrip.hpp"
@@ -33,10 +42,12 @@ using namespace std;
 // Helper function declarations
 vector<Vehicle> initializeVehicles();
 vector<TripLeg> initializeTripLegs();
-Parameters initializeParms();
+TripParameters initializeParms();
+vector<Vehicle> importVehicles();
 double requestInput(double defaultVal);
 void printResults(VehicleTrip shortestTime, VehicleTrip longestTime, VehicleTrip leastFuelAdded,
 				VehicleTrip mostFuelAdded, VehicleTrip leastFuelUsed, VehicleTrip mostFuelUsed);
+void printToFile(ofstream & outputFile);
 void printVehicleStats(VehicleTrip trip);
 void printExpectedStats(int testCase, double tankSize, int cityMPG, int highwayMPG, int tripTime, double fuelAddedCost,
 		double fuelUsedCost, double fuelAdded, double fuelUsed, double fuelRemaining, int fuelStops);
@@ -53,7 +64,7 @@ int main()
 
 	vector<Vehicle> vehicles = initializeVehicles();
 	vector<TripLeg> tripLegs = initializeTripLegs();
-	Parameters parms = initializeParms();
+	TripParameters parms = initializeParms();
 
 	VehicleTrip initialTrip(vehicles.at(0), parms);
 	initialTrip.runTrip(tripLegs);
@@ -170,7 +181,7 @@ vector<TripLeg> initializeTripLegs()
 	return tripLegs;
 }
 
-Parameters initializeParms()
+TripParameters initializeParms()
 {
 	int cityMPH, highwayMPH, refuelTime, restroomTime, napTime, awakeTime;
 	double fuelPrice, gasDistance;
@@ -243,7 +254,7 @@ Parameters initializeParms()
 		}
 	}
 
-	Parameters parms(cityMPH, highwayMPH, fuelPrice, refuelTime,
+	TripParameters parms(cityMPH, highwayMPH, fuelPrice, refuelTime,
 					restroomTime, napTime, awakeTime, gasDistance);
 	cout << "--------------------------------------------------------" << endl;
 	cout << endl;
@@ -269,6 +280,18 @@ double requestInput(double defaultVal)
 			return value;
 		cout << "Invalid value, please try again" << endl;
 	}
+}
+
+// TODO
+vector<Vehicle> importVehicles()
+{
+
+}
+
+// TODO
+void printToFile(ofstream & outputFile)
+{
+
 }
 
 // Prints the results of the trip
@@ -405,7 +428,7 @@ void tripTesting()
 			30);
 	vector<TripLeg> l1;
 	l1.push_back(TripLeg(20, TripLeg::CITY));			// Trip is 20 miles
-	Parameters p1(30, 60, 2.5, 20, 10, 15, 8, 15);		// Station every 15 miles
+	TripParameters p1(30, 60, 2.5, 20, 10, 15, 8, 15);		// Station every 15 miles
 	VehicleTrip t1(v1, p1);
 	t1.runTrip(l1);
 	printExpectedStats(1, 2, 15, 30, 40, 0, 3.33, 0, 1.3333, .6666, 0);
@@ -419,7 +442,7 @@ void tripTesting()
 			30);	// HighwayMPG
 	vector<TripLeg> l2;
 	l2.push_back(TripLeg(20, TripLeg::CITY));	// Trip is 20 miles
-	Parameters p2(
+	TripParameters p2(
 			30, 	// cityMPH
 			60, 	// highwayMPH
 			2.5, 	// Fuel Cost
@@ -452,7 +475,7 @@ void tripTesting()
 			30);	// HighwayMPG
 	vector<TripLeg> l3;
 	l3.push_back(TripLeg(50, TripLeg::CITY));	// Trip is 50 miles
-	Parameters p3(
+	TripParameters p3(
 			30, 	// cityMPH
 			60, 	// highwayMPH
 			2.5, 	// Fuel Cost
@@ -485,7 +508,7 @@ void tripTesting()
 			30);	// HighwayMPG
 	vector<TripLeg> l4;
 	l4.push_back(TripLeg(70, TripLeg::CITY));	// Trip is 70 miles
-	Parameters p4(
+	TripParameters p4(
 			30, 	// cityMPH
 			60, 	// highwayMPH
 			2.5, 	// Fuel Cost
@@ -519,7 +542,7 @@ void tripTesting()
 	vector<TripLeg> l5;
 	l5.push_back(TripLeg(50, TripLeg::CITY));
 	l5.push_back(TripLeg(50, TripLeg::CITY));	// Trip is 100 miles
-	Parameters p5(
+	TripParameters p5(
 			30, 	// cityMPH
 			60, 	// highwayMPH
 			2.5, 	// Fuel Cost
@@ -554,7 +577,7 @@ void tripTesting()
 	vector<TripLeg> l6;
 	l6.push_back(TripLeg(50, TripLeg::CITY));
 	l6.push_back(TripLeg(50, TripLeg::HIGHWAY));	// Trip is 100 miles
-	Parameters p6(
+	TripParameters p6(
 			30, 	// cityMPH
 			60, 	// highwayMPH
 			2.5, 	// Fuel Cost
@@ -589,7 +612,7 @@ void tripTesting()
 	vector<TripLeg> l7;
 	l7.push_back(TripLeg(50, TripLeg::CITY));
 	l7.push_back(TripLeg(50, TripLeg::HIGHWAY));	// Trip is 100 miles
-	Parameters p7(
+	TripParameters p7(
 			30, 	// cityMPH
 			60, 	// highwayMPH
 			2.5, 	// Fuel Cost
@@ -626,7 +649,7 @@ void tripTesting()
 	l8.push_back(TripLeg(14.5, 	TripLeg::HIGHWAY));
 	l8.push_back(TripLeg(20, 	TripLeg::HIGHWAY));
 	l8.push_back(TripLeg(10, 	TripLeg::CITY));	// Trip is 50 miles
-	Parameters p8(
+	TripParameters p8(
 			30, 	// cityMPH
 			60, 	// highwayMPH
 			2.5, 	// Fuel Cost

@@ -1,8 +1,8 @@
 //==============================================================================
-// Assignment 1 - Parameters Class
+// Assignment 1 - TripParameters Class
 //==============================================================================
 /*
-    File: Parameters.hpp
+    File: TripParameters.hpp
     Project: Assignment 1
     Author: Nathaniel Hoefer
     Student ID: X529U639
@@ -14,6 +14,8 @@
 #ifndef PARAMETERS_HPP_
 #define PARAMETERS_HPP_
 
+#include <string>
+
 // Constants for all default values
 static const int 	CITY_MPH = 		25;
 static const int 	HIGHWAY_MPH = 	70;
@@ -24,7 +26,7 @@ static const int 	RESTROOM_TIME = 10;		// in minutes
 static const int 	NAP_TIME = 		15;		// in minutes
 static const int 	AWAKE_TIME = 	8;		// in hours
 
-class Parameters
+class TripParameters
 {
 private:
 	int mCityMPH;
@@ -37,8 +39,9 @@ private:
 	double mGasDistance;		// in miles
 
 public:
-	Parameters();
-	Parameters(int cityMPH, int highwayMPH, double fuelPrice, int refuelTime,
+	TripParameters();
+	TripParameters(std::string file);
+	TripParameters(int cityMPH, int highwayMPH, double fuelPrice, int refuelTime,
 			int restroomTimeMins, int napTimeMins, int awakeTimeHrs, double gasDistance);
 
 	int 	getCityMph() const;
@@ -58,6 +61,9 @@ public:
 	void 	setNapTime(int napTime);
 	void 	setAwakeTime(int awakeTime);
 	void 	setGasDistance(double gastDistance);
+
+	// TODO Read in the parms from a file
+	bool	retrieveParms(std::string file);
 };
 
 #endif /* PARAMETERS_HPP_ */

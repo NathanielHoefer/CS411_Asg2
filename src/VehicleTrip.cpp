@@ -13,7 +13,7 @@
 
 #include "VehicleTrip.hpp"
 
-VehicleTrip::VehicleTrip(Vehicle &vehicle, Parameters &parms)
+VehicleTrip::VehicleTrip(Vehicle &vehicle, TripParameters &parms)
 {
 	mParms = 		parms;
 	mVehicle = 		vehicle;
@@ -26,7 +26,7 @@ VehicleTrip::VehicleTrip(Vehicle &vehicle, Parameters &parms)
 	mTripTime = 	0;
 }
 
-Parameters VehicleTrip::getParms()			{ return mParms; }
+TripParameters VehicleTrip::getParms()			{ return mParms; }
 Vehicle VehicleTrip::getVehicle() 			{ return mVehicle; }
 double 	VehicleTrip::getFuelPurchased() 	{ return mFuelPurchased; }
 double 	VehicleTrip::getFuelConsumed() 		{ return mFuelConsumed; }

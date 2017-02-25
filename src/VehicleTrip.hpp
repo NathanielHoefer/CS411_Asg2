@@ -16,7 +16,7 @@
 
 #include "TripLeg.hpp"
 #include "Vehicle.hpp"
-#include "Parameters.hpp"
+#include "TripParameters.hpp"
 #include <vector>
 #include <math.h>
 #include <sstream>
@@ -24,7 +24,7 @@
 class VehicleTrip
 {
 private:
-	Parameters 	mParms;
+	TripParameters 	mParms;
 	Vehicle 	mVehicle;
 	double 		mFuelPurchased;
 	double 		mFuelConsumed;
@@ -36,9 +36,9 @@ private:
 
 
 public:
-	VehicleTrip(Vehicle &vehicle, Parameters &parms);
+	VehicleTrip(Vehicle &vehicle, TripParameters &parms);
 
-	Parameters 	getParms();
+	TripParameters 	getParms();
 	Vehicle 	getVehicle();
 	double 		getFuelPurchased();
 	double 		getFuelConsumed();
