@@ -33,6 +33,7 @@
 #include <iomanip>
 #include <iostream>
 #include <sstream>
+#include <fstream>
 #include <vector>
 #include <stdlib.h>
 
@@ -43,7 +44,7 @@ vector<Vehicle> initializeVehicles();
 vector<TripLeg> initializeTripLegs();
 TripParameters initializeParms();
 vector<Vehicle> importVehicles();
-string parseLine(string str, int element, char delimeter);
+string parseLine(const string str, const int element, const char delimeter);
 double requestInput(double defaultVal);
 void printResults(VehicleTrip shortestTime, VehicleTrip longestTime, VehicleTrip leastFuelAdded,
 				VehicleTrip mostFuelAdded, VehicleTrip leastFuelUsed, VehicleTrip mostFuelUsed);
@@ -52,6 +53,7 @@ void printVehicleStats(VehicleTrip trip);
 void printExpectedStats(int testCase, double tankSize, int cityMPG, int highwayMPG, int tripTime, double fuelAddedCost,
 		double fuelUsedCost, double fuelAdded, double fuelUsed, double fuelRemaining, int fuelStops);
 void tripTesting();
+void tripTesting2();
 
 
 int main()
@@ -61,8 +63,9 @@ int main()
 	cout << "========================================================" << endl;
 
 //	tripTesting();	// Used for running test cases
+//	tripTesting2();
 
-	vector<Vehicle> vehicles = initializeVehicles();
+	vector<Vehicle> vehicles = importVehicles();
 	vector<TripLeg> tripLegs = initializeTripLegs();
 	TripParameters parms = initializeParms();
 
@@ -285,36 +288,44 @@ double requestInput(double defaultVal)
 // TODO
 vector<Vehicle> importVehicles()
 {
-//	string file = "WichitaToMonticello-Vehicles.txt";
-//	ifstream stream(file);
-//	string line = "";
-//
-//	//Make|Model|EngineSize|EngineCylinders|TankSize|MpgCity|MpgHighway
-//	string make, model;
-//	double engine, tankSize;
-//	int cylinders, cityMPG, highwayMPG;
-//
-//	// Stream in each line and trim
-//	while (!stream.) {
-//		getline(stream, line);
-//		line.erase(0, line.find_first_not_of(" \t\r\n"));
-//
-//		// Check to see if it is a comment line
-//		if (!line[0] == '#') {
-//			// Parse the line and create a vehicle object
-//			int barIndex = line.find('|');
-//			make = line.substr(0, barIndex);
-//			barIndex = line.find('|');
-//			model = line.substr(0, barIndex);
-//			barIndex = line.find('|');
-//		}
-//
-//
-//	}
+	string file = "WichitaToMonticello-Vehicles.txt";
+	ifstream stream;
+	stream.open(file.c_str(), ifstream::in);
+	string line = "";
+
+	//Make|Model|EngineSize|EngineCylinders|TankSize|MpgCity|MpgHighway
+	string make, model;
+	double engine, tankSize;
+	int cylinders, cityMPG, highwayMPG;
+	vector<Vehicle> vehicles;
+
+	// Stream in each line and trim
+	while (!stream.eof()) {
+		getline(stream, line);
+		line.erase(0, line.find_first_not_of(" \t\r\n"));
+
+		// Check to see if it is a comment line
+		if (line[0] != '#' && !line.empty()) {
+			// Parse the line and create a vehicle object
+			make = parseLine(line, 0, '|');
+			model = parseLine(line, 1, '|');
+			engine = atof(parseLine(line, 2, '|').c_str());
+			cylinders = atoi(parseLine(line, 3, '|').c_str());
+			tankSize = atof(parseLine(line, 4, '|').c_str());
+			cityMPG = atoi(parseLine(line, 5, '|').c_str());
+			highwayMPG = atoi(parseLine(line, 6, '|').c_str());
+		}
+		vehicles.push_back(Vehicle(make, model, engine, cylinders, tankSize, cityMPG, highwayMPG));
+	}
+	return vehicles;
 }
 
-// TODO
-string parseLine(string str, int element, char delimeter)
+// Parses the input string based on the delimiter given and the element requested.
+//	Preconditions: Elements begin with zero and if exceeds the number of elements within
+//		the string, it will loop around.
+//	Postconditions: None
+//	Returns: String of the parsed element
+string parseLine(const string str, const int element, const char delimeter)
 {
 	int index, len;
 	index = len = 0;
@@ -453,6 +464,12 @@ void printVehicleStats(VehicleTrip trip)
 			<< "gal    Fuel remaining = " << currentFuel << " gal" << endl;
 	cout << "Fuel used  = " << setw(8) << fuelConsumed;
 	cout << "gal    Fuel stops     = " << gStationCnt << endl << endl << endl;
+}
+
+void tripTesting2()
+{
+	vector<Vehicle> vehicles = importVehicles();
+	exit(0);
 }
 
 // Function used for testing scenarios
