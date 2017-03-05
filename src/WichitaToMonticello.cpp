@@ -16,12 +16,11 @@
     Notes: Input values have not been fully checked for values ranging far beyond
     reasonable values since it was not explicitly mentioned in the rubric.
 
+	TODO: ImportVehicles function
+	TODO: Update TripParameters Constructor
+	TODO: TripParameters retrieveParms function
     TODO: Create a VehicleRecords Class
 	TODO: PrintToFile function
-	TODO: Create ImportVehicles text file
-    TODO: ImportVehicles function
-    TODO: Update TripParameters Constructor
-    TODO: TripParameters retrieveParms function
     TODO: Exception Handling
 
 
@@ -44,6 +43,7 @@ vector<Vehicle> initializeVehicles();
 vector<TripLeg> initializeTripLegs();
 TripParameters initializeParms();
 vector<Vehicle> importVehicles();
+string parseLine(string str, int element, char delimeter);
 double requestInput(double defaultVal);
 void printResults(VehicleTrip shortestTime, VehicleTrip longestTime, VehicleTrip leastFuelAdded,
 				VehicleTrip mostFuelAdded, VehicleTrip leastFuelUsed, VehicleTrip mostFuelUsed);
@@ -285,7 +285,45 @@ double requestInput(double defaultVal)
 // TODO
 vector<Vehicle> importVehicles()
 {
+//	string file = "WichitaToMonticello-Vehicles.txt";
+//	ifstream stream(file);
+//	string line = "";
+//
+//	//Make|Model|EngineSize|EngineCylinders|TankSize|MpgCity|MpgHighway
+//	string make, model;
+//	double engine, tankSize;
+//	int cylinders, cityMPG, highwayMPG;
+//
+//	// Stream in each line and trim
+//	while (!stream.) {
+//		getline(stream, line);
+//		line.erase(0, line.find_first_not_of(" \t\r\n"));
+//
+//		// Check to see if it is a comment line
+//		if (!line[0] == '#') {
+//			// Parse the line and create a vehicle object
+//			int barIndex = line.find('|');
+//			make = line.substr(0, barIndex);
+//			barIndex = line.find('|');
+//			model = line.substr(0, barIndex);
+//			barIndex = line.find('|');
+//		}
+//
+//
+//	}
+}
 
+// TODO
+string parseLine(string str, int element, char delimeter)
+{
+	int index, len;
+	index = len = 0;
+	len = str.find(delimeter);
+	for (int i = 0; i < element; i++) {
+		index += len + 1;
+		len = str.find(delimeter, index) - index;
+	}
+	return str.substr(index, len);
 }
 
 // TODO
