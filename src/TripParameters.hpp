@@ -1,13 +1,13 @@
 //==============================================================================
-// Assignment 1 - TripParameters Class
+// Assignment 2 - TripParameters Class
 //==============================================================================
 /*
     File: TripParameters.hpp
-    Project: Assignment 1
+    Project: Assignment 2
     Author: Nathaniel Hoefer
     Student ID: X529U639
     Class: CS411 - Spring 2017
-	Date: 2/18/2017
+	Date: 3/5/2017
 
 ******************************************************************************/
 
@@ -15,6 +15,8 @@
 #define PARAMETERS_HPP_
 
 #include <string>
+#include <fstream>
+#include <cstdlib>
 
 // Constants for all default values
 static const int 	CITY_MPH = 		25;
@@ -25,6 +27,16 @@ static const int 	REFUEL_TIME = 	20;		// in minutes
 static const int 	RESTROOM_TIME = 10;		// in minutes
 static const int 	NAP_TIME = 		15;		// in minutes
 static const int 	AWAKE_TIME = 	8;		// in hours
+
+// Constants for input .ini labels
+static const std::string CITY_MPH_LABEL = 		"MphCity";
+static const std::string HIGHWAY_MPH_LABEL = 	"MphHighway";
+static const std::string FUEL_PRICE_LABEL = 	"FuelPrice";
+static const std::string GAS_DISTANCE_LABEL = 	"DistanceBetweenGasStations";
+static const std::string AWAKE_TIME_LABEL = 	"TimeBetweenNaps";
+static const std::string REFUEL_TIME_LABEL = 	"RefuelTime";
+static const std::string RESTROOM_TIME_LABEL = 	"RestroomTime";
+static const std::string NAP_TIME_LABEL = 		"NapTime";
 
 class TripParameters
 {
@@ -63,7 +75,7 @@ public:
 	void 	setGasDistance(double gastDistance);
 
 	// TODO Read in the parms from a file
-	bool	retrieveParms(std::string file);
+	void	retrieveParms(std::string file);
 };
 
 #endif /* PARAMETERS_HPP_ */

@@ -1,5 +1,5 @@
 //==============================================================================
-// Assignment 1 - TripParameters Class
+// Assignment 2 - TripParameters Class
 //==============================================================================
 /*
     File: TripParameters.cpp
@@ -7,7 +7,7 @@
     Author: Nathaniel Hoefer
     Student ID: X529U639
     Class: CS411 - Spring 2017
-	Date: 2/18/2017
+	Date: 3/5/2017
 
 ******************************************************************************/
 
@@ -41,6 +41,14 @@ TripParameters::TripParameters(int cityMPH, int highwayMPH, double fuelPrice, in
 // TODO
 TripParameters::TripParameters(std::string file)
 {
+	mCityMPH = 			CITY_MPH;
+	mHighwayMPH = 		HIGHWAY_MPH;
+	mFuelPrice = 		FUEL_PRICE;
+	mRefuelTimeMins = 	REFUEL_TIME;
+	mRestroomTimeMins = RESTROOM_TIME;
+	mNapTimeMins = 		NAP_TIME;
+	mAwakeTimeMins = 	AWAKE_TIME * 60;
+	mGasDistance = 		GAS_DISTANCE;
 	retrieveParms(file);
 }
 
@@ -63,7 +71,41 @@ void 	TripParameters::setAwakeTime(int awakeTime) 		{ mAwakeTimeMins = awakeTime
 void 	TripParameters::setGasDistance(double gastDistance) { mGasDistance = gastDistance; }
 
 // TODO
-bool TripParameters::retrieveParms(std::string file)
+void TripParameters::retrieveParms(std::string file)
 {
-	return false;
+	std::ifstream stream;
+	stream.open(file.c_str(), std::ifstream::in);
+	std::string line = "";
+	double value = 0;
+	while (!stream.eof()) {
+		std::getline(stream, line);
+
+		// Trim input line
+		line.erase(0, line.find_first_not_of(" \t\r\n"));
+
+		// Check to see if it is a comment line
+		if (line[0] != '#' && !line.empty()) {
+			int index = line.find('=');
+			value = std::atof(line.substr(index + 1, line.length() - index).c_str());
+			line = line.substr(0, index);
+
+			if (line == CITY_MPH_LABEL) {
+				mCityMPH = (int) value;
+			} else if (line == HIGHWAY_MPH_LABEL) {
+				mHighwayMPH = (int) value;
+			} else if (line == FUEL_PRICE_LABEL) {
+				mFuelPrice = value;
+			} else if (line == GAS_DISTANCE_LABEL) {
+				mGasDistance = value;
+			} else if (line == AWAKE_TIME_LABEL) {
+				mAwakeTimeMins = (int) value * 60;
+			} else if (line == REFUEL_TIME_LABEL) {
+				mRefuelTimeMins = (int) value;
+			} else if (line == RESTROOM_TIME_LABEL) {
+				mRestroomTimeMins = (int) value;
+			} else if (line == NAP_TIME_LABEL) {
+				mNapTimeMins = (int) value;
+			}
+		}
+	}
 }

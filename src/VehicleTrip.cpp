@@ -1,5 +1,5 @@
 //==============================================================================
-// Assignment 1 - VehicleTrip Class
+// Assignment 2 - VehicleTrip Class
 //==============================================================================
 /*
     File: VehicleTrip.cpp
@@ -12,6 +12,7 @@
 ******************************************************************************/
 
 #include "VehicleTrip.hpp"
+#include <iostream>
 
 VehicleTrip::VehicleTrip(Vehicle &vehicle, TripParameters &parms)
 {

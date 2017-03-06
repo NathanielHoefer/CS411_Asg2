@@ -1,5 +1,5 @@
 //==============================================================================
-// Assignment 1 - WichitaToMonticello
+// Assignment 2 - WichitaToMonticello
 //==============================================================================
 /*
     File: WichitaToMonticello.cpp
@@ -7,7 +7,7 @@
     Author: Nathaniel Hoefer
     Student ID: X529U639
     Class: CS411 - Spring 2017
-	Date: 2/18/2017
+	Date: 3/5/2017
 
     Simulates a trip from Wichita to Monticello with a number of vehicles to
     determine which vehicles take the least/most time, require the least/most
@@ -16,10 +16,10 @@
     Notes: Input values have not been fully checked for values ranging far beyond
     reasonable values since it was not explicitly mentioned in the rubric.
 
-	TODO: ImportVehicles function
-	TODO: Update TripParameters Constructor
-	TODO: TripParameters retrieveParms function
-    TODO: Create a VehicleRecords Class
+	DONE: ImportVehicles function
+	DONE: Update TripParameters Constructor
+	DONE: TripParameters retrieveParms function
+    DONE: Create a VehicleRecords Class
 	TODO: PrintToFile function
     TODO: Exception Handling
 
@@ -29,6 +29,7 @@
 #include "VehicleTrip.hpp"
 #include "TripLeg.hpp"
 #include "Vehicle.hpp"
+#include "VehicleRecords.hpp"
 #include <string>
 #include <iomanip>
 #include <iostream>
@@ -40,12 +41,7 @@
 using namespace std;
 
 // Helper function declarations
-vector<Vehicle> initializeVehicles();
 vector<TripLeg> initializeTripLegs();
-TripParameters initializeParms();
-vector<Vehicle> importVehicles();
-string parseLine(const string str, const int element, const char delimeter);
-double requestInput(double defaultVal);
 void printResults(VehicleTrip shortestTime, VehicleTrip longestTime, VehicleTrip leastFuelAdded,
 				VehicleTrip mostFuelAdded, VehicleTrip leastFuelUsed, VehicleTrip mostFuelUsed);
 void printToFile(ofstream & outputFile);
@@ -65,9 +61,11 @@ int main()
 //	tripTesting();	// Used for running test cases
 //	tripTesting2();
 
-	vector<Vehicle> vehicles = importVehicles();
+	string vehFile = "WichitaToMonticello-Vehicles.txt";
+	string parmsFile = "WichitaToMonticello-Input.ini";
+	vector<Vehicle> vehicles = VehicleRecords::importVehicles(vehFile);
 	vector<TripLeg> tripLegs = initializeTripLegs();
-	TripParameters parms = initializeParms();
+	TripParameters parms(parmsFile);
 
 	VehicleTrip initialTrip(vehicles.at(0), parms);
 	initialTrip.runTrip(tripLegs);
@@ -102,48 +100,6 @@ int main()
 
 	// Print the formatted results
 	printResults(shortestTime, longestTime, leastFuelAdded, mostFuelAdded, leastFuelUsed, mostFuelUsed);
-}
-
-// Creates the vehicle objects
-vector<Vehicle> initializeVehicles()
-{
-	vector<Vehicle> vehicles;
-
-	vehicles.push_back(Vehicle("Chevrolet", "Spark", 			1.2, 4, 10.5, 	28, 36));
-	vehicles.push_back(Vehicle("Chevrolet", "Cruze", 			1.8, 4, 12.5, 	22, 35));
-	vehicles.push_back(Vehicle("Chevrolet", "Sonic", 			1.8, 4, 12, 	25, 35));
-	vehicles.push_back(Vehicle("Chevrolet", "Camaro",			3.6, 6, 13, 	19, 28));
-	vehicles.push_back(Vehicle("Chevrolet", "Suburban C1500", 	5.3, 8, 33, 	13, 18));
-	vehicles.push_back(Vehicle("Chevrolet", "Suburban C2500",	6.0, 8, 36, 	10, 15));
-	vehicles.push_back(Vehicle("Chrysler", "Town & Country",	3.6, 6, 12.5, 	22, 29));
-	vehicles.push_back(Vehicle("Chrysler","300",				5.7, 8, 13.5, 	18, 28));
-	vehicles.push_back(Vehicle("Dodge", "Grand Caravan",		3.6, 4, 12.5, 	23, 29));
-	vehicles.push_back(Vehicle("Dodge", "Challenger",			5.7, 4, 13, 	16, 25));
-	vehicles.push_back(Vehicle("Dodge", "Charger",				5.7, 4, 13, 	17, 26));
-	vehicles.push_back(Vehicle("Ford", "Fiesta",				1.6, 4, 9.5, 	29, 39));
-	vehicles.push_back(Vehicle("Ford", "Focus",					2.0, 4, 11.5, 	27, 38));
-	vehicles.push_back(Vehicle("Ford", "Fusion",				2.0, 4, 12.5, 	22, 33));
-	vehicles.push_back(Vehicle("Ford", "Taurus",				3.5, 4, 13, 	19, 29));
-	vehicles.push_back(Vehicle("Ford", "Mustang",				5.0, 4, 12, 	18, 25));
-	vehicles.push_back(Vehicle("Ford", "E150 Wagon",			5.4, 4, 33.5, 	14, 17));
-	vehicles.push_back(Vehicle("Ford", "E350 Wagon",			5.4, 4, 36.5, 	9, 	16));
-	vehicles.push_back(Vehicle("Ford", "Expedition 4WD",		5.4, 4, 19, 	13, 19));
-	vehicles.push_back(Vehicle("Ford", "F150 Pickup 2WD",		6.2, 4, 25.5, 	15, 20));
-	vehicles.push_back(Vehicle("Ford", "F150 Pickup 4WD",		6.2, 4, 23, 	14, 19));
-	vehicles.push_back(Vehicle("Honda", "Civic",				1.8, 4, 12, 	28, 39));
-	vehicles.push_back(Vehicle("Honda", "Accord",				3.5, 4, 12.5, 	21, 34));
-	vehicles.push_back(Vehicle("Hyundai", "Accent",				1.6, 4, 10.5, 	28, 37));
-	vehicles.push_back(Vehicle("Hyundai", "Elantra",			1.8, 4, 13, 	28, 38));
-	vehicles.push_back(Vehicle("Hyundai", "Sonata",				2.4, 4, 13.5, 	24, 35));
-	vehicles.push_back(Vehicle("Mazda", "MAZDA3",				2.0, 4, 11, 	24, 33));
-	vehicles.push_back(Vehicle("Mazda", "MAZDA5",				2.5, 4, 11.5, 	22, 28));
-	vehicles.push_back(Vehicle("Mazda", "MAZDA6",				3.7, 4, 12, 	18, 27));
-	vehicles.push_back(Vehicle("Toyota", "Corolla",				1.8, 4, 12.5, 	26, 34));
-	vehicles.push_back(Vehicle("Toyota", "Sienna",				2.7, 4, 13, 	19, 24));
-	vehicles.push_back(Vehicle("Toyota", "Camry",				3.5, 4, 13.5, 	21, 31));
-	vehicles.push_back(Vehicle("Toyota", "4Runner 4WD",			4.0, 4, 15, 	17, 21));
-
-	return vehicles;
 }
 
 // Creates trip leg objects
@@ -182,159 +138,6 @@ vector<TripLeg> initializeTripLegs()
 	tripLegs.push_back(TripLeg(1.7, 	TripLeg::CITY));
 
 	return tripLegs;
-}
-
-TripParameters initializeParms()
-{
-	int cityMPH, highwayMPH, refuelTime, restroomTime, napTime, awakeTime;
-	double fuelPrice, gasDistance;
-	string input = "";
-	bool isFinished, isApproved;
-	isFinished = isApproved = false;
-
-	while (!isFinished) {
-		isFinished = isApproved = false;
-
-		cout << "Enter the following parameters: " << endl;
-		cout << " - Average speed in the city (MPH) [25]: ";
-		cityMPH = (int)requestInput(CITY_MPH);
-		cout << " - Average speed on the highway (MPH) [70]: ";
-		highwayMPH = (int)requestInput(HIGHWAY_MPH);
-		cout << " - Average fuel price per gallon [2.19]: ";
-		fuelPrice = requestInput(FUEL_PRICE);
-		cout << " - Distance between gas stations (miles) [80.0]: ";
-		gasDistance = requestInput(GAS_DISTANCE);
-		cout << " - Time required to refuel (minutes) [20]: ";
-		refuelTime = (int)requestInput(REFUEL_TIME);
-		cout << " - Time required to use the restroom (minutes) [10]: ";
-		restroomTime = (int)requestInput(RESTROOM_TIME);
-		cout << " - Time required to take a nap (minutes) [15]: ";
-		napTime = (int)requestInput(NAP_TIME);
-		cout << " - Time before requiring sleep (hours) [8]: ";
-		awakeTime = round(requestInput(AWAKE_TIME));
-
-		cout << "\n--------------------------------------------------------"
-				<< endl << endl;
-
-		// Verifies input with user
-		while (!isApproved) {
-			cout << left << setw(13) << "City MPH:" << right
-					<< setfill('0') << setw(2) << cityMPH
-					<< setfill(' ') << setw(3) << "";
-			cout << left << setw(21) << "Refuel Time (min):" << right
-					<< setfill('0') << setw(2) << refuelTime
-					<< setfill(' ') << setw(3) << "";
-			cout << left << setw(18) << "Nap Time (min):" << right
-					<< setfill('0') << setw(2) << napTime
-					<< setfill(' ') << endl;
-			cout << left << setw(13) << "Highway MPH:" << right
-					<< setfill('0') << setw(2) << highwayMPH
-					<< setfill(' ') << setw(3) << "";
-			cout << left << setw(21) << "Restroom Time (min):" << right
-					<< setfill('0') << setw(2) << restroomTime
-					<< setfill(' ') << setw(3) << "";
-			cout << left << setw(18) << "Awake Time (hr):" << right
-					<< setfill(' ') << setw(2) << awakeTime
-					<< setfill(' ') << endl;
-			cout << left << setw(30) << "Gas Station Distance (miles): "
-					<< fixed << setprecision(1) << setw(9) << gasDistance
-					<< "Fuel Price: $" << setprecision(2) << fuelPrice << endl;
-			cout << " - Are the entered parameters correct? (Y/N)" << endl;
-
-			getline(cin, input);
-
-			if (input == "Y" || input == "y") {
-				isFinished = true;
-				isApproved = true;
-			} else if (input == "N" || input == "n") {
-				cout << "--------------------------------------------------------"
-						<< endl << endl;
-				isApproved = true;
-			} else {
-				cout << "--------------------------------------------------------"
-						<< endl << endl;
-			}
-		}
-	}
-
-	TripParameters parms(cityMPH, highwayMPH, fuelPrice, refuelTime,
-					restroomTime, napTime, awakeTime, gasDistance);
-	cout << "--------------------------------------------------------" << endl;
-	cout << endl;
-	return parms;
-}
-
-// Checks if input is valid
-double requestInput(double defaultVal)
-{
-	double value = defaultVal;
-	string input = "";
-
-	while (true) {
-		getline(cin, input);
-
-		if (input.empty() || input == "\r") {
-			return defaultVal;
-		}
-
-		// Converts string to value
-		stringstream stream(input);
-		if (stream >> value)
-			return value;
-		cout << "Invalid value, please try again" << endl;
-	}
-}
-
-// TODO
-vector<Vehicle> importVehicles()
-{
-	string file = "WichitaToMonticello-Vehicles.txt";
-	ifstream stream;
-	stream.open(file.c_str(), ifstream::in);
-	string line = "";
-
-	//Make|Model|EngineSize|EngineCylinders|TankSize|MpgCity|MpgHighway
-	string make, model;
-	double engine, tankSize;
-	int cylinders, cityMPG, highwayMPG;
-	vector<Vehicle> vehicles;
-
-	// Stream in each line and trim
-	while (!stream.eof()) {
-		getline(stream, line);
-		line.erase(0, line.find_first_not_of(" \t\r\n"));
-
-		// Check to see if it is a comment line
-		if (line[0] != '#' && !line.empty()) {
-			// Parse the line and create a vehicle object
-			make = parseLine(line, 0, '|');
-			model = parseLine(line, 1, '|');
-			engine = atof(parseLine(line, 2, '|').c_str());
-			cylinders = atoi(parseLine(line, 3, '|').c_str());
-			tankSize = atof(parseLine(line, 4, '|').c_str());
-			cityMPG = atoi(parseLine(line, 5, '|').c_str());
-			highwayMPG = atoi(parseLine(line, 6, '|').c_str());
-		}
-		vehicles.push_back(Vehicle(make, model, engine, cylinders, tankSize, cityMPG, highwayMPG));
-	}
-	return vehicles;
-}
-
-// Parses the input string based on the delimiter given and the element requested.
-//	Preconditions: Elements begin with zero and if exceeds the number of elements within
-//		the string, it will loop around.
-//	Postconditions: None
-//	Returns: String of the parsed element
-string parseLine(const string str, const int element, const char delimeter)
-{
-	int index, len;
-	index = len = 0;
-	len = str.find(delimeter);
-	for (int i = 0; i < element; i++) {
-		index += len + 1;
-		len = str.find(delimeter, index) - index;
-	}
-	return str.substr(index, len);
 }
 
 // TODO
@@ -468,7 +271,16 @@ void printVehicleStats(VehicleTrip trip)
 
 void tripTesting2()
 {
-	vector<Vehicle> vehicles = importVehicles();
+	vector<Vehicle> vehicles = VehicleRecords::importVehicles("WichitaToMonticello-Vehicles.txt");
+	TripParameters parms("WichitaToMonticello-Input.ini");
+	cout << parms.getCityMph() << " "
+			<< parms.getHighwayMph() << " "
+			<< parms.getFuelPrice() << " "
+			<< parms.getGasDistance() << " "
+			<< parms.getRefuelTime() << " "
+			<< parms.getRestroomTime() << " "
+			<< parms.getNapTime() << " "
+			<< parms.getAwakeTime() << endl;
 	exit(0);
 }
 
