@@ -91,6 +91,14 @@ std::ostream & operator <<(std::ostream &lhs, const Vehicle &rhs)
 	// Delineates data with commas
 	lhs << rhs.mMake + ",";
 	lhs << rhs.mModel + ",";
+	stream << rhs.mEngine;
+	lhs << stream.str() + ",";
+	stream.str("");
+	stream.clear();
+	stream << rhs.mCylinderCnt;
+	lhs << stream.str() + ",";
+	stream.str("");
+	stream.clear();
 	stream << rhs.mTankSize;
 	lhs << stream.str() + ",";
 	stream.str("");

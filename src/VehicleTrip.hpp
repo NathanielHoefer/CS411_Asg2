@@ -55,8 +55,8 @@ public:
 	void runTrip(std::vector<TripLeg> &legs);
 
 //	Overloaded << operater to stream out the following:
-//		make << model << tanksize << cityMPG << highwayMPG << currentFuel
-//		<< TripTime << FuelPurchase << FuelConsumed << GasStationCount
+//		make << model << engineSize << engineCylinders << tanksize << cityMPG << highwayMPG
+//		<< currentFuel << TripTime << FuelPurchase << FuelConsumed << GasStationCount
 	friend std::ostream & operator <<(std::ostream &lhs, VehicleTrip &rhs);
 
 private:

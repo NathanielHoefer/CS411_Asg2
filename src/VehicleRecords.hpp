@@ -22,6 +22,8 @@
 
 class VehicleRecords
 {
+	VehicleRecords() {};
+
 public:
 	/*
 	 * Imports and creates vehicle objects from the file passed

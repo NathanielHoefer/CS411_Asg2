@@ -67,7 +67,7 @@ public:
 	void fillTank();
 
 //	Overloaded << operater to stream out the following comma delineated:
-//		make << model << tanksize << cityMPG << highwayMPG << currentFuel
+//		make << model << engineSize << engineCylinders << tanksize << cityMPG << highwayMPG << currentFuel
 	friend std::ostream & operator <<(std::ostream &lhs, const Vehicle &rhs);
 };
 
