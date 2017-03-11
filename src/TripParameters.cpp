@@ -7,11 +7,54 @@
     Author: Nathaniel Hoefer
     Student ID: X529U639
     Class: CS411 - Spring 2017
-	Date: 3/5/2017
+	Date: 3/11/2017
 
 ******************************************************************************/
 
 #include "TripParameters.hpp"
+
+namespace
+{
+	// Trims both the right and left side of all white spaces
+	// 		Preconditions: String contains chars other than white space
+	//		Postconditions: None
+	// 		Returns: Reference to trimmed string
+	std::string& trimString(std::string &str)
+	{
+		str.erase(0, str.find_first_not_of(" \t\r\n"));
+		str.erase(str.find_last_not_of(" \t\r\n") + 1);
+		return str;
+	}
+
+	// Determines if the entered string contains only digits
+	// 		Preconditions: None
+	//		Postconditions: None
+	//		Returns: True if string contains only digits
+	bool isDigits(std::string& str)
+	{
+		bool isDigits = true;
+		if (str.length() > 0) {
+			for (int i = 0; i < (int) str.length(); i++ ) {
+				if (!std::isdigit(str[i]) && str[i] != '.') {
+					isDigits = false;
+					i = str.length();
+				}
+			}
+		}
+		return isDigits;
+	}
+
+	// Converts an integer to a string
+	//		Preconditions: None
+	//		Postconditions: None
+	//		Returns: String containing the int value
+	std::string toString(const int val)
+	{
+		char buffer[10000];
+		std::string str = itoa(val, buffer, 10);
+		return str;
+	}
+}
 
 TripParameters::TripParameters()
 {
@@ -38,8 +81,7 @@ TripParameters::TripParameters(int cityMPH, int highwayMPH, double fuelPrice, in
 	mGasDistance = 		gasDistance;
 }
 
-// TODO
-TripParameters::TripParameters(std::string file)
+TripParameters::TripParameters(std::string file) throw (std::invalid_argument)
 {
 	mCityMPH = 			CITY_MPH;
 	mHighwayMPH = 		HIGHWAY_MPH;
@@ -70,25 +112,51 @@ void 	TripParameters::setNapTime(int napTime) 			{ mNapTimeMins = napTime; }
 void 	TripParameters::setAwakeTime(int awakeTime) 		{ mAwakeTimeMins = awakeTime; }
 void 	TripParameters::setGasDistance(double gastDistance) { mGasDistance = gastDistance; }
 
-// TODO
-void TripParameters::retrieveParms(std::string file)
+void TripParameters::retrieveParms(std::string file) throw (std::invalid_argument)
 {
 	std::ifstream stream;
-	stream.open(file.c_str(), std::ifstream::in);
+	stream.open(file.c_str());
+
+	// Validates that the stream is open
+	if (stream.fail()) {
+		std::string exc = "Unable to open parameter file: " + file;
+		throw std::invalid_argument(exc);
+	}
+
 	std::string line = "";
+	std::string temp = "";
 	double value = 0;
+	int lineNum = 1;
+
+	// Read through the entire file, line by line
 	while (!stream.eof()) {
 		std::getline(stream, line);
 
 		// Trim input line
-		line.erase(0, line.find_first_not_of(" \t\r\n"));
+		line = trimString(line);
 
-		// Check to see if it is a comment line
+		// Check to see if it is a comment line or blank line
 		if (line[0] != '#' && !line.empty()) {
-			int index = line.find('=');
-			value = std::atof(line.substr(index + 1, line.length() - index).c_str());
-			line = line.substr(0, index);
 
+			// Validates that the line format is correct
+			size_t equalIndex = line.find('=');
+			if (equalIndex == std::string::npos) {
+				std::string exc = "Invalid parameter line [" + toString(lineNum) + "]: " + line;
+				throw std::invalid_argument(exc);
+			}
+			temp = line.substr((int)equalIndex + 1, line.length() - (int)equalIndex);
+			temp = trimString(temp);
+			line = line.substr(0, (int)equalIndex);
+			line = trimString(line);
+
+			// Validates that the parm value is only numeric
+			if (!isDigits(temp)) {
+				std::string exc = "Invalid parameter value [" + toString(lineNum) + "]: " + temp;
+				throw std::invalid_argument(exc);
+			}
+			value = std::atof(temp.c_str());
+
+			// Determine Label
 			if (line == CITY_MPH_LABEL) {
 				mCityMPH = (int) value;
 			} else if (line == HIGHWAY_MPH_LABEL) {
@@ -107,5 +175,6 @@ void TripParameters::retrieveParms(std::string file)
 				mNapTimeMins = (int) value;
 			}
 		}
+		lineNum++;
 	}
 }

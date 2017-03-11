@@ -7,7 +7,7 @@
     Author: Nathaniel Hoefer
     Student ID: X529U639
     Class: CS411 - Spring 2017
-	Date: 3/5/2017
+	Date: 3/11/2017
 
 ******************************************************************************/
 
@@ -17,6 +17,7 @@
 #include <string>
 #include <fstream>
 #include <cstdlib>
+#include <stdexcept>
 
 // Constants for all default values
 static const int 	CITY_MPH = 		25;
@@ -40,22 +41,20 @@ static const std::string NAP_TIME_LABEL = 		"NapTime";
 
 class TripParameters
 {
-private:
-	int mCityMPH;
-	int mHighwayMPH;
-	double mFuelPrice;
-	int mRefuelTimeMins;		// in minutes
-	int mRestroomTimeMins;		// in minutes
-	int mNapTimeMins;			// in minutes
-	int mAwakeTimeMins;			// in minutes
-	double mGasDistance;		// in miles
-
 public:
 	TripParameters();
-	TripParameters(std::string file);
+
+	// Imports the parameters from the entered file
+	//		Preconditions: The file must contain the labels listed as constants
+	//			followed by the '=' and then the value. Extra white space is ignored
+	//			and lines beginning with '#' are treated as comment lines and ingored.
+	//		Postconditions: Values found in file are imported to member variables.
+	//			If the parameter is not found, the default value will be used.
+	TripParameters(std::string file) throw (std::invalid_argument);
 	TripParameters(int cityMPH, int highwayMPH, double fuelPrice, int refuelTime,
 			int restroomTimeMins, int napTimeMins, int awakeTimeHrs, double gasDistance);
 
+	// Accessor Methods
 	int 	getCityMph() const;
 	int 	getHighwayMph() const;
 	double 	getFuelPrice() const;
@@ -65,6 +64,7 @@ public:
 	int 	getAwakeTime() const;
 	double 	getGasDistance() const;
 
+	// Mutator Methods
 	void 	setCityMph(int cityMph);
 	void 	setHighwayMph(int highwayMph);
 	void 	setFuelPrice(double fuelPrice);
@@ -74,8 +74,23 @@ public:
 	void 	setAwakeTime(int awakeTime);
 	void 	setGasDistance(double gastDistance);
 
-	// TODO Read in the parms from a file
-	void	retrieveParms(std::string file);
+	// Retrieves the parameters from the entered file and updates the data as such
+	//		Preconditions: The file must contain the labels listed as constants
+	//			followed by the '=' and then the value. Extra white space is ignored
+	//			and lines beginning with '#' are treated as comment lines and ingored.
+	//		Postconditions: Values found in file are imported to member variables.
+	//			If the parameter is not found, the default value will be used.
+	void	retrieveParms(std::string file) throw (std::invalid_argument);
+
+private:
+	int mCityMPH;
+	int mHighwayMPH;
+	double mFuelPrice;
+	int mRefuelTimeMins;		// in minutes
+	int mRestroomTimeMins;		// in minutes
+	int mNapTimeMins;			// in minutes
+	int mAwakeTimeMins;			// in minutes
+	double mGasDistance;		// in miles
 };
 
 #endif /* PARAMETERS_HPP_ */
