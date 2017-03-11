@@ -3,7 +3,7 @@
 //==============================================================================
 /*
     File: Vehicle.cpp
-    Project: Assignment 1
+    Project: Assignment 2
     Author: Nathaniel Hoefer
     Student ID: X529U639
     Class: CS411 - Spring 2017

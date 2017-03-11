@@ -3,16 +3,15 @@
 //==============================================================================
 /*
     File: VehicleTrip.cpp
-    Project: Assignment 1
+    Project: Assignment 2
     Author: Nathaniel Hoefer
     Student ID: X529U639
     Class: CS411 - Spring 2017
-	Date: 2/18/2017
+	Date: 3/11/2017
 
 ******************************************************************************/
 
 #include "VehicleTrip.hpp"
-#include <iostream>
 
 VehicleTrip::VehicleTrip(Vehicle &vehicle, TripParameters &parms)
 {

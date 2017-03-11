@@ -43,14 +43,6 @@ class TripParameters
 {
 public:
 	TripParameters();
-
-	// Imports the parameters from the entered file
-	//		Preconditions: The file must contain the labels listed as constants
-	//			followed by the '=' and then the value. Extra white space is ignored
-	//			and lines beginning with '#' are treated as comment lines and ingored.
-	//		Postconditions: Values found in file are imported to member variables.
-	//			If the parameter is not found, the default value will be used.
-	TripParameters(std::string file) throw (std::invalid_argument);
 	TripParameters(int cityMPH, int highwayMPH, double fuelPrice, int refuelTime,
 			int restroomTimeMins, int napTimeMins, int awakeTimeHrs, double gasDistance);
 
@@ -80,7 +72,7 @@ public:
 	//			and lines beginning with '#' are treated as comment lines and ingored.
 	//		Postconditions: Values found in file are imported to member variables.
 	//			If the parameter is not found, the default value will be used.
-	void	retrieveParms(std::string file) throw (std::invalid_argument);
+	void retrieveParms(std::string file) throw (std::invalid_argument);
 
 private:
 	int mCityMPH;

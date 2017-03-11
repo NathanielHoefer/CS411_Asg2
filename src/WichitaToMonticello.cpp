@@ -3,7 +3,7 @@
 //==============================================================================
 /*
     File: WichitaToMonticello.cpp
-    Project: Assignment 1
+    Project: Assignment 2
     Author: Nathaniel Hoefer
     Student ID: X529U639
     Class: CS411 - Spring 2017
@@ -11,19 +11,14 @@
 
     Simulates a trip from Wichita to Monticello with a number of vehicles to
     determine which vehicles take the least/most time, require the least/most
-    fuel purchased, and require the least/most consumed.
+    fuel purchased, and require the least/most consumed. This program imports both
+    the vehicles and the parameters from the string constants provided at the
+    beginning of this file. The results are printed to the console as well as to
+    the file specified by the string constant OUTPUT_FILE. Helper functions and
+    Test drivers were moved to separate files in order to clean this file.
 
     Notes: Input values have not been fully checked for values ranging far beyond
     reasonable values since it was not explicitly mentioned in the rubric.
-
-	DONE: ImportVehicles function
-	DONE: Update TripParameters Constructor
-	DONE: TripParameters retrieveParms function
-    DONE: Create a VehicleRecords Class
-	DONE: PrintToFile function
-	TODO: Handle different format in input files
-    TODO: Exception Handling
-
 
 ******************************************************************************/
 
@@ -57,11 +52,17 @@ int main()
 	vector<TripLeg> tripLegs = initializeTripLegs();
 	TripParameters parms;
 
+	// Exits the program if vehicles or parameters are not properly imported
 	try {
 		vehicles = VehicleRecords::importVehicles(VEHICLE_FILE);
 		parms.retrieveParms(PARMS_FILE);
 	} catch (invalid_argument &e) {
 		cout << e.what() << endl;
+		cout << "ENDING PROGRAM";
+		exit(1);
+	} catch (exception &e) {
+		cout << e.what() << endl;
+		cout << "ENDING PROGRAM" << endl;
 		exit(1);
 	}
 

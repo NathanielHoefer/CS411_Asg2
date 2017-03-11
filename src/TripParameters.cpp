@@ -3,7 +3,7 @@
 //==============================================================================
 /*
     File: TripParameters.cpp
-    Project: Assignment 1
+    Project: Assignment 2
     Author: Nathaniel Hoefer
     Student ID: X529U639
     Class: CS411 - Spring 2017
@@ -51,7 +51,8 @@ namespace
 	std::string toString(const int val)
 	{
 		char buffer[10000];
-		std::string str = itoa(val, buffer, 10);
+		std::sprintf(buffer, "%d", val);
+		std::string str = buffer;
 		return str;
 	}
 }
@@ -81,19 +82,6 @@ TripParameters::TripParameters(int cityMPH, int highwayMPH, double fuelPrice, in
 	mGasDistance = 		gasDistance;
 }
 
-TripParameters::TripParameters(std::string file) throw (std::invalid_argument)
-{
-	mCityMPH = 			CITY_MPH;
-	mHighwayMPH = 		HIGHWAY_MPH;
-	mFuelPrice = 		FUEL_PRICE;
-	mRefuelTimeMins = 	REFUEL_TIME;
-	mRestroomTimeMins = RESTROOM_TIME;
-	mNapTimeMins = 		NAP_TIME;
-	mAwakeTimeMins = 	AWAKE_TIME * 60;
-	mGasDistance = 		GAS_DISTANCE;
-	retrieveParms(file);
-}
-
 int 	TripParameters::getCityMph() 		const { return mCityMPH; }
 int 	TripParameters::getHighwayMph() 	const { return mHighwayMPH; }
 double 	TripParameters::getFuelPrice() 		const { return mFuelPrice; }
@@ -119,7 +107,7 @@ void TripParameters::retrieveParms(std::string file) throw (std::invalid_argumen
 
 	// Validates that the stream is open
 	if (stream.fail()) {
-		std::string exc = "Unable to open parameter file: " + file;
+		std::string exc = "ERROR: Unable to open parameter file: " + file;
 		throw std::invalid_argument(exc);
 	}
 
@@ -141,7 +129,7 @@ void TripParameters::retrieveParms(std::string file) throw (std::invalid_argumen
 			// Validates that the line format is correct
 			size_t equalIndex = line.find('=');
 			if (equalIndex == std::string::npos) {
-				std::string exc = "Invalid parameter line [" + toString(lineNum) + "]: " + line;
+				std::string exc = "ERROR: Invalid parameter line [" + toString(lineNum) + "]: " + line;
 				throw std::invalid_argument(exc);
 			}
 			temp = line.substr((int)equalIndex + 1, line.length() - (int)equalIndex);
@@ -151,7 +139,7 @@ void TripParameters::retrieveParms(std::string file) throw (std::invalid_argumen
 
 			// Validates that the parm value is only numeric
 			if (!isDigits(temp)) {
-				std::string exc = "Invalid parameter value [" + toString(lineNum) + "]: " + temp;
+				std::string exc = "ERROR: Invalid parameter value [" + toString(lineNum) + "]: " + temp;
 				throw std::invalid_argument(exc);
 			}
 			value = std::atof(temp.c_str());

@@ -3,11 +3,11 @@
 //==============================================================================
 /*
 	File: TripLeg.hpp
-    Project: Assignment 1
+    Project: Assignment 2
     Author: Nathaniel Hoefer
     Student ID: X529U639
     Class: CS411 - Spring 2017
-	Date: 2/18/2017
+	Date: 3/11/2017
 
 ******************************************************************************/
 
@@ -17,19 +17,19 @@
 class TripLeg
 {
 public:
+	// Used to identify road type
 	enum RoadType { HIGHWAY, CITY, DEFAULT };
+
+	TripLeg();
+	TripLeg(double distance, RoadType roadType);
+
+	// Accessors
+	double getDistance();
+	RoadType getRoadType();
 
 private:
 	double mDistance;
 	RoadType mRoadType;
-
-public:
-	TripLeg();
-	TripLeg(double distance, RoadType roadType);
-
-	double getDistance();
-	RoadType getRoadType();
-
 };
 
 #endif /* TRIPLEG_HPP_ */

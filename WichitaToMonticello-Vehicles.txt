@@ -19,13 +19,13 @@ Chrysler|300|5.7|6|13.5|18|28
 Dodge|Grand Caravan|3.6|6|12.5|23|29
 Dodge|Challenger|5.7|8|13.0|16|25
 Dodge|Charger|5.7|8|13.0|17|26
-Ford|Fiesta|1.6|4| 9.5|29|39
+Ford|Fiesta|1.6|4|9.5|29|39
 Ford|Focus|2.0|4|11.5|27|38
 Ford|Fusion|2.0|4|12.5|22|33
 Ford|Taurus|3.5|6|13.0|19|29
 Ford|Mustang|5.0|8|12.0|18|25
 Ford|E150 Wagon|5.4|8|33.5|14|17
-Ford|E350 Wagon|5.4|8|36.5| 9|16
+Ford|E350 Wagon|5.4|8|36.5|9|16
 Ford|Expedition 4WD|5.4|8|19.0|13|19
 Ford|F150 Pickup 2WD|6.2|8|25.5|15|20
 Ford|F150 Pickup 4WD|6.2|8|23.0|14|19
