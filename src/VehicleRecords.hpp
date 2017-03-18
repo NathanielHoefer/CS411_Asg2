@@ -24,6 +24,7 @@
 
 class VehicleRecords
 {
+	// Class cannot be instantiated
 	VehicleRecords() {};
 
 public:

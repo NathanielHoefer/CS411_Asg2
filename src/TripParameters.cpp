@@ -30,15 +30,16 @@ namespace
 	// 		Preconditions: None
 	//		Postconditions: None
 	//		Returns: True if string contains only digits
-	bool isDigits(std::string& str)
+	bool isDigits(std::string str)
 	{
-		bool isDigits = true;
-		if (str.length() > 0) {
-			for (int i = 0; i < (int) str.length(); i++ ) {
-				if (!std::isdigit(str[i]) && str[i] != '.') {
-					isDigits = false;
-					i = str.length();
-				}
+		bool isDigits = false;
+		str = trimString(str);
+		for (int i = 0; i < (int) str.length(); i++ ) {
+			if (std::isdigit(str[i]) || str[i] == '.') {
+				isDigits = true;
+			} else {
+				isDigits = false;
+				i = str.length();
 			}
 		}
 		return isDigits;
@@ -107,7 +108,7 @@ void TripParameters::retrieveParms(std::string file) throw (std::invalid_argumen
 
 	// Validates that the stream is open
 	if (stream.fail()) {
-		std::string exc = "ERROR: Unable to open parameter file: " + file;
+		std::string exc = "ERROR - Parameters Import: Unable to open parameter file: " + file;
 		throw std::invalid_argument(exc);
 	}
 
@@ -129,7 +130,7 @@ void TripParameters::retrieveParms(std::string file) throw (std::invalid_argumen
 			// Validates that the line format is correct
 			size_t equalIndex = line.find('=');
 			if (equalIndex == std::string::npos) {
-				std::string exc = "ERROR: Invalid parameter line [" + toString(lineNum) + "]: " + line;
+				std::string exc = "ERROR - Parameters Import: Invalid parameter line [" + toString(lineNum) + "]: \"" + line + "\"";
 				throw std::invalid_argument(exc);
 			}
 			temp = line.substr((int)equalIndex + 1, line.length() - (int)equalIndex);
@@ -139,7 +140,7 @@ void TripParameters::retrieveParms(std::string file) throw (std::invalid_argumen
 
 			// Validates that the parm value is only numeric
 			if (!isDigits(temp)) {
-				std::string exc = "ERROR: Invalid parameter value [" + toString(lineNum) + "]: " + temp;
+				std::string exc = "ERROR - Parameters Import: Invalid parameter value [" + toString(lineNum) + "]: \"" + temp + "\"";
 				throw std::invalid_argument(exc);
 			}
 			value = std::atof(temp.c_str());
